@@ -1,5 +1,5 @@
 
-export SECRET KEY=1234
+export SECRET KEY=reality321
 export MAIL_USERNAME=iraketsia2001@gmail.com
 export MAIL_PASSWORD=jesuslovesjohn316
 
