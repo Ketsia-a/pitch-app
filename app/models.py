@@ -18,7 +18,7 @@ class User(UserMixin,db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     pass_secure = db.Column(db.String(255))
-    role = db.relationship('Role', backref='user', lazy='dynamic')
+    pitch= db.relationship('Pitch', backref='user', lazy='dynamic')
     comment = db.relationship('Comment', backref='user', lazy='dynamic')
     upvote = db.relationship('Upvote',backref='user',lazy='dynamic')
     downvote = db.relationship('Downvote',backref='user',lazy='dynamic')
@@ -38,22 +38,30 @@ class User(UserMixin,db.Model):
 
     def __repr__(self):
         return f'User {self.username}'
-        
+
+
 class Role(db.Model):
     __tablename__ = 'roles'
 
     id = db.Column(db.Integer,primary_key = True)
     name = db.Column(db.String(255))
     users = db.relationship('User',backref = 'role',lazy="dynamic")
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    time = db.Column(db.DateTime, default = datetime.utcnow)
+
+    def __repr__(self):
+        return f'Role {self.name}'   
+
+
+class Pitch(db.Model):
+    __tablename__ = 'pitches'
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(255),nullable = False)
+    pitch = db.Column(db.Text(), nullable = False)
+    category = db.Column(db.String(255), index = True,nullable = False)
     comment = db.relationship('Comment',backref='pitch',lazy='dynamic')
     upvote = db.relationship('Upvote',backref='pitch',lazy='dynamic')
     downvote = db.relationship('Downvote',backref='pitch',lazy='dynamic')
-   
-
-    def __repr__(self):
-        return f'Role {self.name}'        
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    time = db.Column(db.DateTime, default = datetime.utcnow)
 
 class Comment(db.Model):
     __tablename__ = 'comments'
