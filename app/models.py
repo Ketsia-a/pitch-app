@@ -63,6 +63,15 @@ class Pitch(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     time = db.Column(db.DateTime, default = datetime.utcnow)
 
+        
+    def save_pitch(self):
+        db.session.add(self)
+        db.session.commit()
+
+        
+    def __repr__(self):
+        return f'Pitch {self.post}'
+
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
