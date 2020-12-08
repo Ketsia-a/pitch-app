@@ -1,22 +1,18 @@
 from flask import render_template,request,redirect,url_for,abort
 from . import main
 from flask_login import login_required
+from ..models import User,Pitch,Comment,Upvote,Downvote
 from .forms import UpdateProfile
+from .forms import PitchForm,CommentForm
 from .. import db,photos
 from flask_login import current_user
 
-
-# from ..requests import get_news_source,get_news_article
-# from .forms import ReviewForm
-# from ..models import Article,News
-
-# Views
 @main.route('/')
 def index():
-    pitch = Role.query.all()
-    hobbies = Role.query.filter_by(category = 'Hobbies').all() 
-    experiences = Role.query.filter_by(category = 'Experiences').all()
-    skills = Role.query.filter_by(category = 'Skills').all()
+    pitch = Pitch.query.all()
+    hobbies = Pitch.query.filter_by(category = 'Hobbies').all() 
+    experiences = Pitch.query.filter_by(category = 'Experiences').all()
+    skills = Pitch.query.filter_by(category = 'Skills').all()
     title ='Pitch'
     return render_template('index.html', hobbies = hobbies, experiences = experiences, pitch = pitch, skills= skills, title=title)
 
@@ -55,20 +51,15 @@ def update_pic(uname):
 
 @main.route('/new_pitch', methods = ['POST','GET'])
 @login_required
-def add_role():
+def new_pitch():
     form = PitchForm()
     if form.validate_on_submit():
         title = form.title.data
-        pitch = form.role.data
+        pitch = form.pitch.data
         category = form.category.data
         user_id = current_user
-        
-        
-        if form.validate_on_submit():
-            new_role = Role(pitch=pitch,user_id=current_user._get_current_object().id,category=category,title=title)
-            db.session.add(new_pitch)
-            db.session.commit()
-        
+        new_pitch_object = Pitch(pitch=pitch,user_id=current_user._get_current_object().id,category=category,title=title)
+        new_pitch_object.save_pitch()
         return redirect(url_for('main.index'))
         
     return render_template('role.html', form = form)    
