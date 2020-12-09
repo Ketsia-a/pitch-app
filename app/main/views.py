@@ -93,9 +93,9 @@ def comment(pitch_id):
 @main.route('/upvote/<int:id>',methods = ['POST','GET'])
 @login_required
 def like(id):
-    pitches = Upvote.get_upvotes(id)
+    pitch = Upvote.get_upvotes(id)
     valid_string = f'{current_user.id}:{id}'
-    for pitch in pitches:
+    for pitch in pitch:
         to_str = f'{pitch}'
         print(valid_string+" "+to_str)
         if valid_string == to_str:
@@ -112,9 +112,9 @@ def like(id):
 @main.route('/downvote/<int:id>',methods = ['POST','GET'])
 @login_required
 def dislike(id):
-    pitches = Downvote.get_downvotes(id)
+    pitch = Downvote.get_downvotes(id)
     valid_string = f'{current_user.id}:{id}'
-    for pitch in pitches:
+    for pitch in pitch:
         to_str = f'{p}'
         print(valid_string+" "+to_str)
         if valid_string == to_str:
